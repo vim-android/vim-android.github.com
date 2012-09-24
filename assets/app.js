@@ -52,57 +52,65 @@
         $item.appendTo('#repos');
     }
 
-    $.getJSON('https://api.github.com/users/' + userName + '/repos?callback=?', function (result) {
-        var repos = result.data;
-        $(function () {
-            $('#num-repos').text(repos.length);
+    // https://github.com/twitter/twitter.github.com/pull/8
+    function addRepos(repos, page) {
+        repos = repos || [];
+        page = page || 1;
 
-            // Convert pushed_at to Date.
-            $.each(repos, function (i, repo) {
-                repo.pushed_at = new Date(repo.pushed_at);
+        var uri = "https://api.github.com/users/" + userName + "/repos?callback=?"
+                + "&per_page=100"
+                + "&page="+page;
 
-                var weekHalfLife  = 1.146 * Math.pow(10, -9);
+        $.getJSON(uri, function (result) {
+          if (result.data && result.data.length > 0) {
+            repos = repos.concat(result.data);
+            addRepos(repos, page + 1);
+          }
+          else {
+            $(function () {
+              $("#num-repos").text(repos.length);
 
-                var pushDelta    = (new Date()) - Date.parse(repo.pushed_at);
-                var createdDelta = (new Date()) - Date.parse(repo.created_at);
+              // Convert pushed_at to Date.
+              $.each(repos, function (i, repo) {
+                repo.pushed_at = new Date(repo.pushed_at);
 
-                var weightForPush = 1;
-                var weightForWatchers = 1.314 * Math.pow(10, 7);
+                var weekHalfLife  = 1.146 * Math.pow(10, -9);
 
-                repo.hotness = weightForPush * Math.pow(Math.E, -1 * weekHalfLife * pushDelta);
-                repo.hotness += weightForWatchers * repo.watchers / createdDelta;
-            });
+                var pushDelta    = (new Date) - Date.parse(repo.pushed_at);
+                var createdDelta = (new Date) - Date.parse(repo.created_at);
 
-            // Sort by hotness.
-            repos.sort(function (a, b) {
-                if (a.hotness < b.hotness) return 1;
-                if (b.hotness < a.hotness) return -1;
-                return 0;
-            });
+                var weightForPush = 1;
+                var weightForWatchers = 1.314 * Math.pow(10, 7);
 
-            $.each(repos, function (i, repo) {
-                showRepo(repo);
-            });
+                repo.hotness = weightForPush * Math.pow(Math.E, -1 * weekHalfLife * pushDelta);
+                repo.hotness += weightForWatchers * repo.watchers / createdDelta;
+              });
 
-            // Sort by most-recently pushed to.
-            repos.sort(function (a, b) {
-                if (a.pushed_at < b.pushed_at) return 1;
-                if (b.pushed_at < a.pushed_at) return -1;
-                return 0;
-            });
+              // Sort by highest # of watchers.
+              repos.sort(function (a, b) {
+                if (a.hotness < b.hotness) return 1;
+                if (b.hotness < a.hotness) return -1;
+                return 0;
+              });
 
-            $.each(repos.slice(0, 3), function (i, repo) {
-                showRepoOverview(repo);
-            });
-        });
-    });
+              $.each(repos, function (i, repo) {
+                showRepo(repo);
+              });
 
-    $.getJSON('https://api.github.com/users/' + userName + '/members?callback=?', function (result) {
-        var members = result.data;
-        $(function () {
-            $('#num-members').text(members.length);
-        });
-    });
+              // Sort by most-recently pushed to.
+              repos.sort(function (a, b) {
+                if (a.pushed_at < b.pushed_at) return 1;
+                if (b.pushed_at < a.pushed_at) return -1;
+                return 0;
+              });
+
+              $.each(repos.slice(0, 3), function (i, repo) {
+                showRepoOverview(repo);
+              });
+            });
+          }
+        });
+    }
 
     // Relative times
     function prettyDate(rawdate) {
@@ -128,6 +136,9 @@
         }
         return 'A while ago';
     }
+
+    // Go go
+    addRepos();
 
 })(jQuery);
 
