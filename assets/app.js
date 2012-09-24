@@ -1,13 +1,9 @@
 (function ($, undefined) {
 
-    var orgName = 'h5bp';
+    var userName = 'tlvince';
 
     // Put custom repo URL's in this object, keyed by repo name.
     var repoUrls = {
-        'html5-boilerplate': 'http://html5boilerplate.com/',
-        'mothereffinganimatedgif': 'http://mothereffinganimatedgif.com/',
-        'movethewebforward': 'http://movethewebforward.org/',
-        'html5please': 'http://html5please.us/'
     };
 
     // Put custom repo descriptions in this object, keyed by repo name.
@@ -44,7 +40,7 @@
         $link.append('<p class="repo__info">' + repo.watchers + ' stargazers &middot; ' + repo.language + '</p>');
         $link.append('<p class="repo__desc">' + getRepoDesc(repo) + '</p>');
 
-        $.getJSON('https://api.github.com/repos/' + orgName + '/' + repo.name + '/collaborators?callback=?', function (result) {
+        $.getJSON('https://api.github.com/repos/' + userName + '/' + repo.name + '/collaborators?callback=?', function (result) {
             var collaborators = result.data;
             $.each(collaborators, function (i, collaborator) {
                  $facepile.append($('<img src="' + collaborator.avatar_url + '" title="' + collaborator.login + '" alt="' + collaborator.login + '">'));
@@ -56,7 +52,7 @@
         $item.appendTo('#repos');
     }
 
-    $.getJSON('https://api.github.com/orgs/' + orgName + '/repos?callback=?', function (result) {
+    $.getJSON('https://api.github.com/users/' + userName + '/repos?callback=?', function (result) {
         var repos = result.data;
         $(function () {
             $('#num-repos').text(repos.length);
@@ -101,7 +97,7 @@
         });
     });
 
-    $.getJSON('https://api.github.com/orgs/' + orgName + '/members?callback=?', function (result) {
+    $.getJSON('https://api.github.com/users/' + userName + '/members?callback=?', function (result) {
         var members = result.data;
         $(function () {
             $('#num-members').text(members.length);
