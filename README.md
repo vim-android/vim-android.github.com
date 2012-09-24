@@ -1,5 +1,9 @@
-# h5bp.github.com
+# tlvince.github.com
 
-Display for all the H5BP projects.
+Display for all my open source projects.
 
-Adapted from [twitter.github.com](https://github.com/twitter/twitter.github.com).
+Derived from [h5bp.github.com][h5bp], which is in turn derived from
+[twitter.github.com][twitter].
+
+ [h5bp]: https://github.com/h5bp/h5bp.github.com
+ [twitter]: https://github.com/twitter/twitter.github.com
