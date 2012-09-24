@@ -148,6 +148,12 @@ a.box:active {
     min-height: 452px;
 }
 
+.site-logo img {
+    border-radius: 8px; 
+    -moz-border-radius: 8px; 
+    -webkit-border-radius: 8px;
+}
+
 .stats {
     font-size: 1.125em;
 }
