@@ -1,6 +1,6 @@
 (function ($, undefined) {
 
-    var userName = 'tlvince';
+    var userName = 'vim-android';
 
     // Put custom repo URL's in this object, keyed by repo name.
     var repoUrls = {
