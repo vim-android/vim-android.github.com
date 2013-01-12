@@ -1,6 +1,6 @@
-# tlvince.github.com
+# vim-android.github.com
 
-Browse all my open source projects in one place.
+Browse the Vim Android repositories.
 
 Derived from [h5bp.github.com][h5bp], which is in turn derived from
 [twitter.github.com][twitter].
